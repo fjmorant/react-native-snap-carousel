@@ -1,60 +1,59 @@
-import React, { Component } from 'react';
-import { View, ViewPropTypes } from 'react-native';
-import PropTypes from 'prop-types';
-import PaginationDot from './PaginationDot';
-import styles from './Pagination.style';
+import React, { Component } from "react";
+import { View } from "react-native";
+import PropTypes from "prop-types";
+import PaginationDot from "./PaginationDot";
+import styles from "./Pagination.style";
 
 export default class Pagination extends Component {
+  static propTypes = {
+    dotsLength: PropTypes.number.isRequired,
+    activeDotIndex: PropTypes.number.isRequired,
+    containerStyle: PropTypes.any,
+    dotStyle: PropTypes.any,
+    inactiveDotOpacity: PropTypes.number,
+    inactiveDotScale: PropTypes.number
+  };
 
-    static propTypes = {
-        dotsLength: PropTypes.number.isRequired,
-        activeDotIndex: PropTypes.number.isRequired,
-        containerStyle: ViewPropTypes.style,
-        dotStyle: ViewPropTypes.style,
-        inactiveDotOpacity: PropTypes.number,
-        inactiveDotScale: PropTypes.number
-    };
+  get dots() {
+    const {
+      dotsLength,
+      activeDotIndex,
+      dotStyle,
+      inactiveDotOpacity,
+      inactiveDotScale
+    } = this.props;
 
-    get dots () {
-        const {
-            dotsLength,
-            activeDotIndex,
-            dotStyle,
-            inactiveDotOpacity,
-            inactiveDotScale
-        } = this.props;
+    let dots = [];
 
-        let dots = [];
-
-        for (var i = 0; i < dotsLength; i++) {
-            dots.push(
-                <PaginationDot
-                  key={`pagination-dot-${i}`}
-                  active={i === activeDotIndex}
-                  style={dotStyle}
-                  inactiveOpacity={inactiveDotOpacity}
-                  inactiveScale={inactiveDotScale}
-                />
-            );
-        }
-
-        return dots;
+    for (var i = 0; i < dotsLength; i++) {
+      dots.push(
+        <PaginationDot
+          key={`pagination-dot-${i}`}
+          active={i === activeDotIndex}
+          style={dotStyle}
+          inactiveOpacity={inactiveDotOpacity}
+          inactiveScale={inactiveDotScale}
+        />
+      );
     }
 
-    render () {
-        const { dotsLength, containerStyle } = this.props;
+    return dots;
+  }
 
-        if (!dotsLength || dotsLength < 2) {
-            return false;
-        }
+  render() {
+    const { dotsLength, containerStyle } = this.props;
 
-        return (
-            <View
-              pointerEvents={'none'}
-              style={[styles.sliderPagination, containerStyle || {}]}
-            >
-                { this.dots }
-            </View>
-        );
+    if (!dotsLength || dotsLength < 2) {
+      return false;
     }
+
+    return (
+      <View
+        pointerEvents={"none"}
+        style={[styles.sliderPagination, containerStyle || {}]}
+      >
+        {this.dots}
+      </View>
+    );
+  }
 }
